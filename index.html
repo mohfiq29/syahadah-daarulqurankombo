@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sertifikat Panitia DKM Night Vibes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+      <div id="sertifikat-container">
+        <img src="latarsantri.png" id="sertifikat-template" alt="Template Sertifikat">
+        <div id="nama"></div>
+        <div id="tanggal"></div>
+      </div>
+    <div class="button-container">
+      <button class="btn-unduh" onclick="downloadSertifikatpdf()">Unduh Sertifikat PDF</button>
+      <button class="btn-unduh" onclick="downloadSertifikatpng()">Unduh Sertifikat PNG</button>
+    </div>
+    <div id="modal-nim" class="modal-nim">
+    <div class="modal-content p-3">
+      <h2>Masukkan Data Santri</h2>
+      <input id="namaSantri" class="form-control" type="text" placeholder="Nama Santri">
+      <select id="jumlahJuz" class="form-select mb-3 w-100">
+        <option selected disabled>Jumlah Juz</option>
+        <option value="5">5 Juz</option>
+        <option value="10">10 Juz</option>
+        <option value="15">15 Juz</option>
+        <option value="20">20 Juz</option>
+        <option value="25">25 Juz</option>
+        <option value="30">30 Juz</option>
+      </select>
+      <button class="btn btn-primary w-100" onclick="getdata()">Submit</button>
+    </div>
+  </div>
+    
+    
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>
