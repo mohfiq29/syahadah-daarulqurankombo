@@ -92,11 +92,20 @@ function getdata() {
   // Tampilkan data ke elemen output
   document.getElementById('nama').textContent = namaSantri;
   const today = new Date();
-  const todayMasehi = today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-  // Tanggal Hijriah
-  const hijriOptions = { day: 'numeric', month: 'long', year: 'numeric', calendar: 'islamic' };
-  const todayHijriah = today.toLocaleDateString('id-ID-u-ca-islamic', hijriOptions);
-  const tanggalGabung = `Kombo, ${todayMasehi} | ${todayHijriah}`
+  const todayMasehi = today.toLocaleDateString('id-ID', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  });
+
+  // Tangani Hijriah agar tetap tampil di HP (via GitHub Pages)
+  let todayHijriah = "Hijriah tidak tersedia";
+  try {
+    const hijriOptions = { day: 'numeric', month: 'long', year: 'numeric', calendar: 'islamic' };
+    todayHijriah = new Intl.DateTimeFormat('id-ID-u-ca-islamic', hijriOptions).format(today);
+  } catch (e) {
+    console.warn("Browser tidak mendukung kalender Hijriah:", e);
+  }
+
+  const tanggalGabung = `Kombo, ${todayMasehi} | ${todayHijriah}`;
   document.getElementById('tanggal').textContent = tanggalGabung;
   document.getElementById('modal-nim').style.display = 'none';
 
