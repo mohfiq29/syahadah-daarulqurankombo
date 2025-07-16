@@ -26,6 +26,7 @@ function masehiKeHijriah(date) {
 function getdata() {
   const namaSantri = document.getElementById('namaSantri').value.trim();
   const jumlahJuz = document.getElementById('jumlahJuz').value;
+  const inputTanggal = document.getElementById('tanggalPicker')?.value;
   const templateImg = document.getElementById('sertifikat-template');
   const namaElement = document.getElementById('nama');
   const tanggalElement = document.getElementById('tanggal');
@@ -36,34 +37,62 @@ function getdata() {
   }
 
   const templateMap = {
-    "5": "5_Juz.png", "10": "10_Juz.png", "15": "15_Juz.png",
-    "20": "20_Juz.png", "25": "25_Juz.png", "30": "30_Juz.png"
-  };
+  "5": "5_Juz.png", 
+  "10": "10_Juz.png", 
+  "15": "15_Juz.png",
+  "20": "20_Juz.png", 
+  "25": "25_Juz.png", 
+  "30": "30_Juz.png"
+};
 
   const posisiTopMap = {
-    "5": "calc(23vw + 2%)", "10": "calc(19vw + 2%)", "15": "calc(18vw + 2%)",
-    "20": "calc(19.2vw + 2%)", "25": "calc(24vw + 2%)", "30": "calc(27vw + 2%)"
-  };
+  "5": "24vw",
+  "10": "20vw",
+  "15": "20vw",
+  "20": "21vw",
+  "25": "24vw",
+  "30": "28vw"
+};
   const posisiLeftMap = {
-    "5": "52.1%", "10": "48.8%", "15": "50%",
-    "20": "58.2%", "25": "50%", "30": "50%"
-  };
+  "5": "55%", 
+  "10": "50.5%", 
+  "15": "50%",
+  "20": "58.2%", 
+  "25": "50%", 
+  "30": "50%"
+};
   const fontMap = {
-    "5": "#0a1d41", "10": "#035d5b", "15": "#0a5d70",
-    "20": "#01385a", "25": "#045254", "30": "#191818"
-  };
+  "5": "#0a1d41", 
+  "10": "#035d5b", 
+  "15": "#0a5d70",
+  "20": "#01385a", 
+  "25": "#045254", 
+  "30": "#191818"
+};
   const tanggalTopMap = {
-    "5": "43vw", "10": "45.5vw", "15": "44.5vw",
-    "20": "41.9vw", "25": "43.7vw", "30": "49.5vw"
-  };
+  "5": "43vw", 
+  "10": "45.5vw", 
+  "15": "44.5vw",
+  "20": "41.9vw", 
+  "25": "43.7vw", 
+  "30": "49.5vw"
+};
   const tanggalLeftMap = {
-    "5": "54.6%", "10": "49.9%", "15": "50%",
-    "20": "58.2%", "25": "50%", "30": "50%"
-  };
+  "5": "54.6%", 
+  "10": "49.9%", 
+  "15": "50%",
+  "20": "58.2%", 
+  "25": "50%", 
+  "30": "50%"
+};
   const tanggalfontMap = {
-    "5": "#8e5f16", "10": "#035d5b", "15": "#020e11",
-    "20": "#000000", "25": "#045254", "30": "#191818"
-  };
+  "5": "#8e5f16", 
+  "10": "#035d5b", 
+  "15": "#020e11",
+  "20": "#000000", 
+  "25": "#045254", 
+  "30": "#191818"
+};
 
   // Set gambar sertifikat
   if (templateMap[jumlahJuz]) {
@@ -73,25 +102,26 @@ function getdata() {
     return;
   }
 
-  // Set nama
+  // Atur Nama
   namaElement.textContent = namaSantri;
-  namaElement.style.top = posisiTopMap[jumlahJuz] || "calc(23.8vw + 2%)";
-  namaElement.style.left = posisiLeftMap[jumlahJuz] || "50%";
-  namaElement.style.color = fontMap[jumlahJuz] || "#000";
+  namaElement.style.top = posisiTopMap[jumlahJuz]
+  namaElement.style.left = posisiLeftMap[jumlahJuz]
+  namaElement.style.color = fontMap[jumlahJuz]
 
-  // Set tanggal
+  // Atur Tanggal Posisi & Warna
   tanggalElement.style.top = tanggalTopMap[jumlahJuz] || "calc(23.8vw + 2%)";
   tanggalElement.style.left = tanggalLeftMap[jumlahJuz] || "50%";
   tanggalElement.style.color = tanggalfontMap[jumlahJuz] || "#000";
 
-  const today = new Date();
-  const todayMasehi = today.toLocaleDateString('id-ID', {
+  // Atur Tanggal Masehi & Hijriah
+  const dateSelected = inputTanggal ? new Date(inputTanggal) : new Date();
+  const todayMasehi = dateSelected.toLocaleDateString('id-ID', {
     day: 'numeric', month: 'long', year: 'numeric'
   });
-  const todayHijriah = masehiKeHijriah(today);
+  const todayHijriah = masehiKeHijriah(dateSelected);
   const tanggalGabung = `Kombo, ${todayMasehi} | ${todayHijriah}`;
-
   tanggalElement.textContent = tanggalGabung;
+
   document.getElementById('modal-nim').style.display = 'none';
 }
 
@@ -115,18 +145,11 @@ function getQueryParam(param) {
 
 function downloadSertifikatpdf() {
   const element = document.querySelector("#sertifikat-container");
-
   html2canvas(element).then(canvas => {
     const imgData = canvas.toDataURL("image/png");
-    const pdf = new jspdf.jsPDF({
-      orientation: "landscape",
-      unit: "mm",
-      format: [210, 297]
-    });
-
+    const pdf = new jspdf.jsPDF({ orientation: "landscape", unit: "mm", format: [210, 297] });
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-
     pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
     const nama = document.getElementById('nama').textContent.trim().replace(/\s+/g, '_') || "Santri";
     pdf.save(`sertifikat_${nama}.pdf`);
@@ -135,7 +158,6 @@ function downloadSertifikatpdf() {
 
 function downloadSertifikatpng() {
   const element = document.querySelector("#sertifikat-container");
-
   html2canvas(element).then(canvas => {
     const link = document.createElement("a");
     const nama = document.getElementById('nama').textContent.trim().replace(/\s+/g, '_') || "Santri";
